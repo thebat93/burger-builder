@@ -22,7 +22,27 @@ class BurgerBuilder extends Component {
             cheese: 0,
             meat: 0
         },
-        totalPrice: 4 // цена по дефолту
+        totalPrice: 4, // цена по дефолту
+        purchaseable: false // флаг возможности покупки бургера
+    }
+
+    // проверка возможности покупки
+    updatePurchaseState (ingredients) {
+        // суммарное количество ингредиентов
+        // создаем массив из названий ингредиентов
+        const sum = Object.keys(ingredients)
+            // проходим по нему и меняем названия ингредиентов на их количество
+            .map(ingredientKey => {
+                return ingredients[ingredientKey]
+            })
+            // суммируем количество
+            .reduce((sum, el) => {
+                return sum + el;
+            }, 0);
+        this.setState({
+            // флаг возможности покупки true если число элементов больше 0
+            purchaseable: sum > 0
+        })
     }
 
     // обработчик добавления ингредиента
@@ -49,6 +69,7 @@ class BurgerBuilder extends Component {
             ingredients: updateIngredients,
             totalPrice: newPrice
         });
+        this.updatePurchaseState(updateIngredients);
     }
 
     // обработчик удаления ингридиента
@@ -79,6 +100,7 @@ class BurgerBuilder extends Component {
             ingredients: updateIngredients,
             totalPrice: newPrice
         });
+        this.updatePurchaseState(updateIngredients);
     }
 
     render() {
@@ -98,7 +120,8 @@ class BurgerBuilder extends Component {
                     ingredientAdded={this.addIngredientHandler} 
                     ingredientRemoved={this.removeIngredientHandler}
                     disabled={disabledInfo}
-                    price={this.state.totalPrice} />
+                    price={this.state.totalPrice}
+                    purchaseable={this.state.purchaseable} />
             </Aux>
         );
     }
