@@ -25,7 +25,8 @@ class BurgerBuilder extends Component {
             meat: 0
         },
         totalPrice: 4, // цена по дефолту
-        purchaseable: false // флаг возможности покупки бургера
+        purchaseable: false, // флаг возможности покупки бургера
+        purchasing: false // флаг состояния покупки бургера
     }
 
     // проверка возможности покупки
@@ -105,6 +106,10 @@ class BurgerBuilder extends Component {
         this.updatePurchaseState(updateIngredients);
     }
 
+    purchaseHandler = () => { // Обработчик нажатия на кнопку заказа
+        this.setState({purchasing: true}); // меняем флаг состояния покупки
+    }
+
     render() {
         // информация для отключения кнопки "Less"
         // по сути дела просто копия состояния ингредиентов
@@ -117,7 +122,7 @@ class BurgerBuilder extends Component {
         }
         return (
             <Aux>
-                <Modal>
+                <Modal show={this.state.purchasing}>
                     <OrderSummary ingredients={this.state.ingredients} />
                 </Modal>
                 <Burger ingredients={this.state.ingredients} />
@@ -126,7 +131,8 @@ class BurgerBuilder extends Component {
                     ingredientRemoved={this.removeIngredientHandler}
                     disabled={disabledInfo}
                     price={this.state.totalPrice}
-                    purchaseable={this.state.purchaseable} />
+                    purchaseable={this.state.purchaseable}
+                    ordered={this.purchaseHandler} />
             </Aux>
         );
     }
