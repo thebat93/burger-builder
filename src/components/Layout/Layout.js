@@ -10,17 +10,23 @@ import SideDrawer from '../Navigation/SideDrawer/SideDrawer';
 
 class Layout extends Component {
     state = {
-        showSideDrawer: true // флага состояния показа бокового меню
+        showSideDrawer: false // флаг состояния показа бокового меню
     }
 
     closeSideDrawerHandler = () => { // обработчик закрытия бокового меню
         this.setState({showSideDrawer: false});
     }
+
+    sideDrawerToggleHandler = () => { // обработчик переключения сайдбара
+        this.setState((prevState) => {
+            return {showSideDrawer: !prevState.showSideDrawer}
+        });
+    }
     
     render() {
         return (
             <Aux>
-                <Toolbar />
+                <Toolbar drawerToggleClicked={this.sideDrawerToggleHandler} />
                 <SideDrawer 
                     open={this.state.showSideDrawer} 
                     closed={this.closeSideDrawerHandler} />
