@@ -13,7 +13,7 @@ const withErrorHandler = (WrapperComponent, axios) => { // передаем об
             error: null // ошибка
         }
 
-        componentDidMount = () => {
+        componentWillMount = () => {
             // при каждой отправке запроса сбрасываем state
             axios.interceptors.request.use(request => { // подключаем интерсептор для запроса и перехватываем его
                 this.setState({error: null}); // обновляем state
