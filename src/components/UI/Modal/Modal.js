@@ -7,8 +7,8 @@ import Backdrop from '../Backdrop/Backdrop';
 // модальное окно
 
 class Modal extends Component {
-    shouldComponentUpdate(nextProps, nextState) { // Чистый компонент, ререндер только если в состоянии меняется show
-        return nextProps.show !== this.props.show;
+    shouldComponentUpdate(nextProps, nextState) { // Чистый компонент, ререндер только если в состоянии меняется show или появляются новые дети (спиннер)
+        return nextProps.show !== this.props.show || nextProps.children !== this.props.children;
     }
 
     componentWillUpdate() {

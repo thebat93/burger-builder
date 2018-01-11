@@ -5,6 +5,8 @@ import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+import axios from '../../axios-orders';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 // контейнер для строителя бургера
 
@@ -26,7 +28,8 @@ class BurgerBuilder extends Component {
         },
         totalPrice: 4, // цена по дефолту
         purchaseable: false, // флаг возможности покупки бургера
-        purchasing: false // флаг состояния покупки бургера
+        purchasing: false, // флаг состояния покупки бургера
+        loading: false // флаг состояния загрузки (во время отправки запроса)
     }
 
     // проверка возможности покупки
@@ -115,7 +118,30 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => { // Обработчик продолжения заказа (нажатие на 'Continue')
-        alert('purchased!');
+        this.setState({ loading: true }); // меняем состояние загрузки
+        // формируем данные для отправки
+        const order = {
+            ingredients: this.state.ingredients,
+            price: this.state.totalPrice,
+            customer: {
+                name: 'Igor',
+                address: {
+                    street: 'street',
+                    zipcode: '111111',
+                    country: 'Russia'
+                },
+                email: 'test@test.com'
+            },
+            delivery: 'fast'
+        };
+        // отправляем данные через axios используя импортированный инстанс
+        axios.post('/orders.json', order)
+            .then(response => 
+                this.setState({loading: false, purchasing: false})
+            )
+            .catch(error => 
+                this.setState({loading: false, purchasing: false})
+            );
     }
 
     render() {
@@ -128,14 +154,19 @@ class BurgerBuilder extends Component {
             // назначаем true/false для каждого ингредиента
             disabledInfo[key] = disabledInfo[key] <= 0;
         }
+        let orderSummary = (<OrderSummary
+        price={this.state.totalPrice.toFixed(2)}
+        purchaseCancelled={this.purchaseCancelHandler}
+        purchaseContinued={this.purchaseContinueHandler}
+        ingredients={this.state.ingredients} />);
+        // отображаем детали заказа или спиннер
+        if (this.state.loading) {
+            orderSummary = <Spinner />;
+        }
         return (
             <Aux>
                 <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
-                    <OrderSummary
-                        price={this.state.totalPrice.toFixed(2)}
-                        purchaseCancelled={this.purchaseCancelHandler}
-                        purchaseContinued={this.purchaseContinueHandler}
-                        ingredients={this.state.ingredients} />
+                    {orderSummary}
                 </Modal>
                 <Burger ingredients={this.state.ingredients} />
                 <BuildControls 
