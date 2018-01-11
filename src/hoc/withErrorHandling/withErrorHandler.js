@@ -13,15 +13,21 @@ const withErrorHandler = (WrapperComponent, axios) => { // передаем об
             error: null // ошибка
         }
 
-        componentWillMount = () => {
+        componentWillMount = () => { // перед рендером компонента
             // при каждой отправке запроса сбрасываем state
-            axios.interceptors.request.use(request => { // подключаем интерсептор для запроса и перехватываем его
+            this.requestInterceptor = axios.interceptors.request.use(request => { // подключаем интерсептор для запроса и перехватываем его
                 this.setState({error: null}); // обновляем state
                 return request; // вернуть запрос чтобы он продолжился
             });
-            axios.interceptors.response.use(response => response, error => { // подключаем интерсептор для ответа и перехватываем ошибки
+            this.responseInterceptor = axios.interceptors.response.use(response => response, error => { // подключаем интерсептор для ответа и перехватываем ошибки
                 this.setState({error: error}); // обновляем state
             });
+        }
+
+        componentWillUnmount = () => { // перед уничтожением компонента
+            // освобождаем из памяти интерсепторы
+            axios.interceptors.request.eject(this.requestInterceptor);
+            axios.interceptors.response.eject(this.responseInterceptor);
         }
 
         errorConfirmedHandler = () => { // сбросить state при подтверждении ошибки
