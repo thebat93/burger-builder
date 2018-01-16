@@ -150,7 +150,15 @@ class BurgerBuilder extends Component {
         //     .catch(error => 
         //         this.setState({loading: false, purchasing: false})
         //     );
-        this.props.history.push('/checkout');
+        const queryParams = []; // формируем массив параметров
+        for (let i in this.state.ingredients) { // превращаем в формат НАЗВАНИЕ_ИНГРЕДИЕНТА=ЧИСЛО
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
+        }
+        const queryString = queryParams.join('&'); // собираем параметры в строку, разделенную "&"
+        this.props.history.push({ // программно переходим на роут "/checkout" и передаем строку с параметрами
+            pathname: '/checkout',
+            search: '?' + queryString
+        });
     }
 
     render() {

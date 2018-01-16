@@ -6,6 +6,7 @@ import classes from './Burger.css';
 // компонент бургера
 
 const burger = (props) => {
+    console.log(props);
     // динамически формируем JSX из компонентов <BurgerIngredient>, который будет находится между нижней и верхей булочкой
     // преобразуем переданный в props объект в массив
     let transformedIngredients = Object.keys(props.ingredients)
