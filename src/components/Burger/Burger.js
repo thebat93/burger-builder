@@ -34,4 +34,7 @@ const burger = (props) => {
     );
 };
 
+// чтобы получить history, match и location в props нужно обернуть компонент в HOC widthRouter из react-router-dom
+// только компоненты, которые указаны в свойстве component компонента Route, получают эти свойства
+// export default withRouter(burger); 
 export default burger;
