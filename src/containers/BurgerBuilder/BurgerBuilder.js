@@ -126,34 +126,11 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => { // Обработчик продолжения заказа (нажатие на 'Continue')
-        // this.setState({ loading: true }); // меняем состояние загрузки
-        // // формируем данные для отправки
-        // const order = {
-        //     ingredients: this.state.ingredients,
-        //     price: this.state.totalPrice,
-        //     customer: {
-        //         name: 'Igor',
-        //         address: {
-        //             street: 'street',
-        //             zipcode: '111111',
-        //             country: 'Russia'
-        //         },
-        //         email: 'test@test.com'
-        //     },
-        //     delivery: 'fast'
-        // };
-        // // отправляем данные через axios используя импортированный инстанс
-        // axios.post('/orders.json', order)
-        //     .then(response => 
-        //         this.setState({loading: false, purchasing: false})
-        //     )
-        //     .catch(error => 
-        //         this.setState({loading: false, purchasing: false})
-        //     );
         const queryParams = []; // формируем массив параметров
         for (let i in this.state.ingredients) { // превращаем в формат НАЗВАНИЕ_ИНГРЕДИЕНТА=ЧИСЛО
             queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
         }
+        queryParams.push('price=' + this.state.totalPrice); // передаем дополнительно полную стоимость
         const queryString = queryParams.join('&'); // собираем параметры в строку, разделенную "&"
         this.props.history.push({ // программно переходим на роут "/checkout" и передаем строку с параметрами
             pathname: '/checkout',
