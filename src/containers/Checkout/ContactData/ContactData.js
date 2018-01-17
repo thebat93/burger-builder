@@ -8,11 +8,57 @@ import Input from '../../../components/UI/Input/Input';
 
 class ContactData extends Component {
     state = {
-        name: '',
-        email: '',
-        address: {
-            street: '',
-            postalCode: ''
+        orderForm: { // настройки для формы
+            name: {
+                elementType: 'input', // тип элемента
+                elementConfig: { // аттрибуты элемента
+                    type: 'text',
+                    placeholder: 'Your Name'
+                },
+                value: '' // значение элемента
+            },
+            street: {
+                elementType: 'input', // тип элемента
+                elementConfig: { // аттрибуты элемента
+                    type: 'text',
+                    placeholder: 'Street'
+                },
+                value: '' // значение элемента
+            },
+            zipcode: {
+                elementType: 'input', // тип элемента
+                elementConfig: { // аттрибуты элемента
+                    type: 'text',
+                    placeholder: 'Zip Code'
+                },
+                value: '' // значение элемента
+            },
+            country: {
+                elementType: 'input', // тип элемента
+                elementConfig: { // аттрибуты элемента
+                    type: 'text',
+                    placeholder: 'Country'
+                },
+                value: '' // значение элемента
+            },
+            email: {
+                elementType: 'input', // тип элемента
+                elementConfig: { // аттрибуты элемента
+                    type: 'email',
+                    placeholder: 'Email'
+                },
+                value: '' // значение элемента
+            },
+            deliveryMethod: {
+                elementType: 'select', // тип элемента
+                elementConfig: { // аттрибуты элемента
+                    options: [
+                        { value: 'fastest', displayValue: 'Fastest' },
+                        { value: 'cheapest', displayValue: 'Cheapest' },
+                    ]
+                },
+                value: '' // значение элемента
+            },
         },
         loading: false
     }
@@ -24,16 +70,6 @@ class ContactData extends Component {
         const order = {
             ingredients: this.props.ingredients,
             price: this.props.price,
-            customer: {
-                name: 'Igor',
-                address: {
-                    street: 'street',
-                    zipcode: '111111',
-                    country: 'Russia'
-                },
-                email: 'test@test.com'
-            },
-            delivery: 'fast'
         };
         // отправляем данные через axios используя импортированный инстанс
         axios.post('/orders.json', order)
@@ -49,7 +85,7 @@ class ContactData extends Component {
     render () {
         let form = (
             <form>
-                <Input inputtype='input' type="email" name="email" placeholder="Your Email" />
+                <Input elementType={} elementConfig={} value={} />
                 <Input inputtype='input' type="text" name="name" placeholder="Your Name" />
                 <Input inputtype='input' type="text" name="street" placeholder="Your Street" />
                 <Input inputtype='input' type="text" name="postal" placeholder="Your Postal Code" />
