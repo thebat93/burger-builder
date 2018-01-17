@@ -63,7 +63,7 @@ class ContactData extends Component {
         loading: false
     }
 
-    inputChangedHandler = (e, inputIdentifier) => { // обработчик изменения значения инпутов
+    inputChangedHandler = (e, inputIdentifier) => { // обработчик изменения значения инпутов (2-way binding)
         const updatedOrderForm = { // копируем настройки всей формы
             ...this.state.orderForm
         };
@@ -78,10 +78,15 @@ class ContactData extends Component {
     orderHandler = (e) => { // обработчик нажатия на кнопку "заказать"
         e.preventDefault();
         this.setState({ loading: true }); // меняем состояние загрузки
+        const formData = {}; // объект { название: значение, ...}
+        for (let formElementIdentifier in this.state.orderForm) {
+            formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
+        }
         // формируем данные для отправки
         const order = {
             ingredients: this.props.ingredients,
             price: this.props.price,
+            orderData: formData
         };
         // отправляем данные через axios используя импортированный инстанс
         axios.post('/orders.json', order)
@@ -103,7 +108,7 @@ class ContactData extends Component {
             });
         }
         let form = (
-            <form>
+            <form onSubmit={this.orderHandler}>
                 { formElementsArray.map(formElement => (
                     <Input 
                         key={formElement.id}
