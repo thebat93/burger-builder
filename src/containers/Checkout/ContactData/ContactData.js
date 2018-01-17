@@ -15,7 +15,11 @@ class ContactData extends Component {
                     type: 'text',
                     placeholder: 'Your Name'
                 },
-                value: '' // значение элемента
+                value: '', // значение элемента
+                validation: { // правила для валидации
+                    required: true
+                },
+                valid: false // флаг валидности поля
             },
             street: {
                 elementType: 'input', // тип элемента
@@ -23,7 +27,11 @@ class ContactData extends Component {
                     type: 'text',
                     placeholder: 'Street'
                 },
-                value: '' // значение элемента
+                value: '', // значение элемента
+                validation: {
+                    required: true
+                },
+                valid: false
             },
             zipcode: {
                 elementType: 'input', // тип элемента
@@ -31,7 +39,13 @@ class ContactData extends Component {
                     type: 'text',
                     placeholder: 'Zip Code'
                 },
-                value: '' // значение элемента
+                value: '', // значение элемента
+                validation: {
+                    required: true,
+                    minLenght: 5,
+                    maxLenght: 5
+                },
+                valid: false
             },
             country: {
                 elementType: 'input', // тип элемента
@@ -39,7 +53,11 @@ class ContactData extends Component {
                     type: 'text',
                     placeholder: 'Country'
                 },
-                value: '' // значение элемента
+                value: '', // значение элемента
+                validation: {
+                    required: true
+                },
+                valid: false
             },
             email: {
                 elementType: 'input', // тип элемента
@@ -47,7 +65,11 @@ class ContactData extends Component {
                     type: 'email',
                     placeholder: 'Email'
                 },
-                value: '' // значение элемента
+                value: '', // значение элемента
+                validation: {
+                    required: true
+                },
+                valid: false
             },
             deliveryMethod: {
                 elementType: 'select', // тип элемента
@@ -63,6 +85,24 @@ class ContactData extends Component {
         loading: false
     }
 
+    checkValidity = (value, rules) => { // проверка валидности
+        let isValid = true;
+
+        if (rules.required) { // если поле должно быть required
+            isValid = value.trim() !== '' && isValid; // устанавливаем новое значение валидности
+        }
+
+        if (rules.minLenght) { // если поле имеет ограничение на количество символов
+            isValid = value.length >= rules.minLenght && isValid;
+        }
+
+        if (rules.maxLenght) { // если поле имеет ограничение на количество символов
+            isValid = value.length <= rules.maxLenght && isValid;
+        }
+        // вернет true только если все проверки успешно прошли
+        return isValid; // вернули boolean
+    }
+
     inputChangedHandler = (e, inputIdentifier) => { // обработчик изменения значения инпутов (2-way binding)
         const updatedOrderForm = { // копируем настройки всей формы
             ...this.state.orderForm
@@ -71,7 +111,10 @@ class ContactData extends Component {
             ...updatedOrderForm[inputIdentifier]
         };
         updatedFormElement.value = e.target.value; // присваиваем новое значение
+        // проверка валидности
+        updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
         updatedOrderForm[inputIdentifier] = updatedFormElement;
+        console.log(updatedFormElement);
         this.setState({ orderForm: updatedOrderForm });
     }
 
