@@ -19,7 +19,8 @@ class ContactData extends Component {
                 validation: { // правила для валидации
                     required: true
                 },
-                valid: false // флаг валидности поля
+                valid: false, // флаг валидности поля
+                touched: false // флаг, показывающий было ли изменено значение поля
             },
             street: {
                 elementType: 'input', // тип элемента
@@ -31,7 +32,8 @@ class ContactData extends Component {
                 validation: {
                     required: true
                 },
-                valid: false
+                valid: false, // флаг валидности поля
+                touched: false // флаг, показывающий было ли изменено значение поля
             },
             zipcode: {
                 elementType: 'input', // тип элемента
@@ -45,7 +47,8 @@ class ContactData extends Component {
                     minLenght: 5,
                     maxLenght: 5
                 },
-                valid: false
+                valid: false, // флаг валидности поля
+                touched: false // флаг, показывающий было ли изменено значение поля
             },
             country: {
                 elementType: 'input', // тип элемента
@@ -57,7 +60,8 @@ class ContactData extends Component {
                 validation: {
                     required: true
                 },
-                valid: false
+                valid: false, // флаг валидности поля
+                touched: false // флаг, показывающий было ли изменено значение поля
             },
             email: {
                 elementType: 'input', // тип элемента
@@ -69,7 +73,8 @@ class ContactData extends Component {
                 validation: {
                     required: true
                 },
-                valid: false
+                valid: false, // флаг валидности поля
+                touched: false // флаг, показывающий было ли изменено значение поля
             },
             deliveryMethod: {
                 elementType: 'select', // тип элемента
@@ -79,6 +84,8 @@ class ContactData extends Component {
                         { value: 'cheapest', displayValue: 'Cheapest' },
                     ]
                 },
+                // validation: false,
+                // touched: false,
                 value: '' // значение элемента
             },
         },
@@ -112,11 +119,11 @@ class ContactData extends Component {
         };
         updatedFormElement.value = e.target.value; // присваиваем новое значение
         // проверка валидности
-        console.log('value '+updatedFormElement.value);
-        console.log('validation '+updatedFormElement.validation);
-        updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
+        if (updatedFormElement.validation) {
+            updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
+            updatedFormElement.touched = true;
+        }
         updatedOrderForm[inputIdentifier] = updatedFormElement;
-        console.log(updatedFormElement);
         this.setState({ orderForm: updatedOrderForm });
     }
 
@@ -162,6 +169,7 @@ class ContactData extends Component {
                         value={formElement.config.value}
                         invalid={!formElement.config.valid}
                         shouldValidate={formElement.config.validation}
+                        touched={formElement.config.touched}
                         changed={(e) => this.inputChangedHandler(e, formElement.id)} />
                 ))}
                 <Button btnType="Success" clicked={this.orderHandler}>ORDER</Button>  

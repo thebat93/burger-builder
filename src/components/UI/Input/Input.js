@@ -8,8 +8,11 @@ const input = (props) => {
     let inputElement = null;
     const inputClasses = [classes.InputElement]; // применяемые классы
 
-    if (props.invalid && props.shouldValidate) { // если форма невалидна, то...
-        inputClasses.push(classes.Invalid); // добавляем класс "Invalid"
+    if (props.invalid && props.shouldValidate && props.touched) { // если поле формы невалидно
+        // и должно быть провалидировано
+        // и было изменено,
+        // то...
+        inputClasses.push(classes.Invalid); // ...добавляем класс "Invalid"
     }
 
     switch ( props.elementType ) { // разные элементы в зависимости от типа
