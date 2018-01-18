@@ -112,6 +112,8 @@ class ContactData extends Component {
         };
         updatedFormElement.value = e.target.value; // присваиваем новое значение
         // проверка валидности
+        console.log('value '+updatedFormElement.value);
+        console.log('validation '+updatedFormElement.validation);
         updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
         updatedOrderForm[inputIdentifier] = updatedFormElement;
         console.log(updatedFormElement);
@@ -158,6 +160,8 @@ class ContactData extends Component {
                         elementType={formElement.config.elementType}
                         elementConfig={formElement.config.elementConfig}
                         value={formElement.config.value}
+                        invalid={!formElement.config.valid}
+                        shouldValidate={formElement.config.validation}
                         changed={(e) => this.inputChangedHandler(e, formElement.id)} />
                 ))}
                 <Button btnType="Success" clicked={this.orderHandler}>ORDER</Button>  
