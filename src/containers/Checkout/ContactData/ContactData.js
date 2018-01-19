@@ -84,11 +84,12 @@ class ContactData extends Component {
                         { value: 'cheapest', displayValue: 'Cheapest' },
                     ]
                 },
-                // validation: false,
-                // touched: false,
-                value: '' // значение элемента
+                valid: true,
+                validation: {},
+                value: 'fastest' // значение элемента
             },
         },
+        formIsValid: false, // флаг валидности всей формы
         loading: false
     }
 
@@ -119,12 +120,16 @@ class ContactData extends Component {
         };
         updatedFormElement.value = e.target.value; // присваиваем новое значение
         // проверка валидности
-        if (updatedFormElement.validation) {
-            updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
-            updatedFormElement.touched = true;
+        updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
+        updatedFormElement.touched = true; // поле было изменено
+        updatedOrderForm[inputIdentifier] = updatedFormElement; // обновляем поле в форме
+        // проверка валидности всей формы
+        let formIsValid = true; 
+        for (let inputIdentifier in updatedOrderForm) { // проходим по всей форме
+            // если хоть одно поле невалидно, то вся форма невалидна
+            formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid;
         }
-        updatedOrderForm[inputIdentifier] = updatedFormElement;
-        this.setState({ orderForm: updatedOrderForm });
+        this.setState({ orderForm: updatedOrderForm, formIsValid });
     }
 
     orderHandler = (e) => { // обработчик нажатия на кнопку "заказать"
@@ -172,7 +177,10 @@ class ContactData extends Component {
                         touched={formElement.config.touched}
                         changed={(e) => this.inputChangedHandler(e, formElement.id)} />
                 ))}
-                <Button btnType="Success" clicked={this.orderHandler}>ORDER</Button>  
+                <Button 
+                    btnType="Success" 
+                    clicked={this.orderHandler}
+                    disabled={!this.state.formIsValid}>ORDER</Button>  
             </form>
         );
         if (this.state.loading) {
