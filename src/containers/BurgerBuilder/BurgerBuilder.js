@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+// импортируем функцию connect для свзязи Реакта и Редакса
+import { connect } from 'react-redux';
 
 import Aux from '../../hoc/hocAux/hocAux';
 import Burger from '../../components/Burger/Burger';
@@ -8,6 +10,7 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import axios from '../../axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandling/withErrorHandler';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import * as actionTypes from '../../store/actions';
 
 
 // контейнер для строителя бургера
@@ -22,7 +25,7 @@ const INGREDIENT_PRICES = {
 
 class BurgerBuilder extends Component {
     state = {
-        ingredients: null,
+        // теперь ingredients находятся в props
         totalPrice: 4, // цена по дефолту
         purchaseable: false, // флаг возможности покупки бургера
         purchasing: false, // флаг состояния покупки бургера
@@ -143,7 +146,7 @@ class BurgerBuilder extends Component {
         // информация для отключения кнопки "Less"
         // по сути дела просто копия состояния ингредиентов
         const disabledInfo = {
-            ...this.state.ingredients
+            ...this.props.ingredients
         }
         for (let key in disabledInfo) {
             // назначаем true/false для каждого ингредиента
@@ -153,13 +156,13 @@ class BurgerBuilder extends Component {
         let orderSummary = null; // по дефолту не отображаются потому что не загружены ингредиенты
         // бургер и контролы
         let burger = this.state.error ? <p>Ingredients can't be loaded</p> : <Spinner />; // по дефолту отображается спиннер потому что не загружены ингредиенты
-        if (this.state.ingredients) { // если загружены ингредиенты, то отображаем соответствующие компоненты
+        if (this.props.ingredients) { // если загружены ингредиенты, то отображаем соответствующие компоненты
             burger = (
                 <Aux>
-                    <Burger ingredients={this.state.ingredients} />
+                    <Burger ingredients={this.props.ingredients} />
                     <BuildControls 
-                        ingredientAdded={this.addIngredientHandler} 
-                        ingredientRemoved={this.removeIngredientHandler}
+                        ingredientAdded={this.props.onIngredientAdded} 
+                        ingredientRemoved={this.props.onIngredientRemoved}
                         disabled={disabledInfo}
                         price={this.state.totalPrice}
                         purchaseable={this.state.purchaseable}
@@ -171,7 +174,7 @@ class BurgerBuilder extends Component {
                     price={this.state.totalPrice.toFixed(2)}
                     purchaseCancelled={this.purchaseCancelHandler}
                     purchaseContinued={this.purchaseContinueHandler}
-                    ingredients={this.state.ingredients} />
+                    ingredients={this.props.ingredients} />
             );
         }
         // отображаем спиннер вместо деталей заказа спиннер если происходит отправка запроса
@@ -189,4 +192,27 @@ class BurgerBuilder extends Component {
     }
 }
 
-export default withErrorHandler(BurgerBuilder, axios);
+// связываем props с свойствами state
+const mapStateToProps = (state) => {
+    return {
+        ingredients: state.ingredients
+    };
+};
+
+// связываем props с вызовами экшенов
+const mapDispatchToProps = (dispatch) => {
+    return {
+        // передаем в экшен тип и название ингредиента
+        onIngredientAdded: (ingredientName) => dispatch({ 
+            type: actionTypes.ADD_INGRIDIENTS, 
+            ingredientName 
+        }),
+        onIngredientRemoved: (ingredientName) => dispatch({ 
+            type: actionTypes.REMOVE_INGRIDIENTS, 
+            ingredientName
+        })
+    };
+};
+
+// используем функцию connect()
+export default connect(mapStateToProps, mapDispatchToProps)( withErrorHandler(BurgerBuilder, axios) );
