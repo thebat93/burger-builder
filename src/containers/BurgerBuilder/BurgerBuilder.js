@@ -19,7 +19,7 @@ class BurgerBuilder extends Component {
     state = {
         // теперь ingredients находятся в props
         // теперь totalPrice находится в props (как price)
-        purchaseable: false, // флаг возможности покупки бургера
+        // теперь флаг возможности покупки бургера находится в props
         purchasing: false, // флаг состояния покупки бургера
         loading: false, // флаг состояния загрузки (во время отправки запроса)
         error: false // флаг ошибки
@@ -49,10 +49,8 @@ class BurgerBuilder extends Component {
             .reduce((sum, el) => {
                 return sum + el;
             }, 0);
-        this.setState({
             // флаг возможности покупки true если число элементов больше 0
-            purchaseable: sum > 0
-        })
+            return sum > 0;
     }
 
     purchaseHandler = () => { // Обработчик нажатия на кнопку заказа
@@ -99,7 +97,7 @@ class BurgerBuilder extends Component {
                         ingredientRemoved={this.props.onIngredientRemoved}
                         disabled={disabledInfo}
                         price={this.props.price}
-                        purchaseable={this.state.purchaseable}
+                        purchaseable={this.updatePurchaseState(this.props.ingredients)}
                         ordered={this.purchaseHandler} />
                 </Aux>
             );
