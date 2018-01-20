@@ -62,16 +62,17 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => { // Обработчик продолжения заказа (нажатие на 'Continue')
-        const queryParams = []; // формируем массив параметров
-        for (let i in this.state.ingredients) { // превращаем в формат НАЗВАНИЕ_ИНГРЕДИЕНТА=ЧИСЛО
-            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
-        }
-        queryParams.push('price=' + this.props.price); // передаем дополнительно полную стоимость
-        const queryString = queryParams.join('&'); // собираем параметры в строку, разделенную "&"
-        this.props.history.push({ // программно переходим на роут "/checkout" и передаем строку с параметрами
-            pathname: '/checkout',
-            search: '?' + queryString
-        });
+        this.props.history.push('/checkout');
+        // const queryParams = []; // формируем массив параметров
+        // for (let i in this.state.ingredients) { // превращаем в формат НАЗВАНИЕ_ИНГРЕДИЕНТА=ЧИСЛО
+        //     queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
+        // }
+        // queryParams.push('price=' + this.props.price); // передаем дополнительно полную стоимость
+        // const queryString = queryParams.join('&'); // собираем параметры в строку, разделенную "&"
+        // this.props.history.push({ // программно переходим на роут "/checkout" и передаем строку с параметрами
+        //     pathname: '/checkout',
+        //     search: '?' + queryString
+        // });
     }
 
     render() {
