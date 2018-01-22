@@ -1,5 +1,6 @@
 // импортируем типы экшенов
 import * as actionTypes from '../actions/actionTypes';
+import { updateObject } from '../utility';
 
 // изначальное состояние
 const initialState = {
@@ -23,40 +24,42 @@ const reducer = (state = initialState, action) => {
     // всегда возращаем state
     switch (action.type) {
         case actionTypes.ADD_INGRIDIENTS:
-            // меняем state иммутабельно: возвращаем новый объект
-            return {
-                ...state, // копируем все свойства на первом уровне 
-                ingredients: {
-                    ...state.ingredients, // копируем все свойства на уровне ingredients
-                    // обновляем свойство выбранного ингредиента
-                    // название свойства передается в экшене
-                    [action.ingredientName]: state.ingredients[action.ingredientName] + 1
-                },
+            // // меняем state иммутабельно: возвращаем новый объект
+            // return {
+            //     ...state, // копируем все свойства на первом уровне 
+            //     ingredients: {
+            //         ...state.ingredients, // копируем все свойства на уровне ingredients
+            //         // обновляем свойство выбранного ингредиента
+            //         // название свойства передается в экшене
+            //         [action.ingredientName]: state.ingredients[action.ingredientName] + 1
+            //     },
+            //     totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
+            // };
+            const updatedIngredient = { [action.ingredientName]: state.ingredients[action.ingredientName] + 1 }; 
+            const updatedIngredients = updateObject(state.ingredients, updatedIngredient);
+            const updatedState = {
+                ingredients: updatedIngredients,
                 totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
             };
+            return updateObject(state, updatedState);
         case actionTypes.REMOVE_INGRIDIENTS:
-            return {
-                ...state, // копируем все свойства на первом уровне 
-                ingredients: {
-                    ...state.ingredients, // копируем все свойства на уровне ingredients
-                    // обновляем свойство выбранного ингредиента
-                    // название свойства передается в экшене
-                    [action.ingredientName]: state.ingredients[action.ingredientName] - 1
-                },
+            const updatedIng = { [action.ingredientName]: state.ingredients[action.ingredientName] - 1 }; 
+            const updatedIngs = updateObject(state.ingredients, updatedIng);
+            const updatedSt = {
+                ingredients: updatedIngs,
                 totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName]
             };
+            return updateObject(state, updatedSt);
         case actionTypes.SET_INGRIDIENTS:
-            return {
-                ...state,
-                ingredients: action.ingredients,
-                totalPrice: 4,
-                error: false
-            };
+            return updateObject(state,
+                {
+                    ...state,
+                    ingredients: action.ingredients,
+                    totalPrice: 4,
+                    error: false
+                });
         case actionTypes.FETCH_INGRIDIENTS_FAILED:
-            return {
-                ...state,
-                error: true
-            }
+            return updateObject(state, { error: true });
         // если ни один тип не подошел, то возвращаем старый state
         default:
             return state;
