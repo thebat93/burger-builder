@@ -3,11 +3,17 @@ import * as actionTypes from '../actions/actionTypes';
 // Начальный State
 const initialState = {
     orders: [], // заказы
-    loading: false // флаг загрузки заказа
+    loading: false, // флаг загрузки заказа
+    purchased: false // флаг окончания заказа
 };
 
 const order = (state = initialState, action) => {
     switch (action.type) {
+        case actionTypes.PURCHASE_INIT:
+            return {
+                ...state,
+                purchased: false
+            };
         case actionTypes.PURCHASE_BURGER_START:
             return {
                 ...state,
@@ -16,7 +22,8 @@ const order = (state = initialState, action) => {
         case actionTypes.PURCHASE_BURGER_SUCCESS:
             const newOrder = {
                 ...action.orderData,
-                orderId: action.orderId
+                orderId: action.orderId,
+                purchased: true
             };
             return {
                 ...state,

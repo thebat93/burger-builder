@@ -57,6 +57,7 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => { // Обработчик продолжения заказа (нажатие на 'Continue')
+        this.props.onInitPurchase(); // сбрасываем флаг окончания заказа по дефолту (начало нового заказа)
         this.props.history.push('/checkout');
         // const queryParams = []; // формируем массив параметров
         // for (let i in this.state.ingredients) { // превращаем в формат НАЗВАНИЕ_ИНГРЕДИЕНТА=ЧИСЛО
@@ -141,7 +142,8 @@ const mapDispatchToProps = (dispatch) => {
             //     ingredientName 
             // }
         onIngredientRemoved: (ingredientName) => dispatch( burgerBuilderActions.removeIngredient(ingredientName) ),
-        onInitIngredients: () => dispatch( burgerBuilderActions.initIngredients() )
+        onInitIngredients: () => dispatch( burgerBuilderActions.initIngredients() ),
+        onInitPurchase: () => dispatch( burgerBuilderActions.purchaseInit() )
     };
 };
 

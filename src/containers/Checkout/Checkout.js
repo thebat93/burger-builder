@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
+import * as orderActions from '../../store/actions/index'; 
 
 // Детали заказа (контейнер)
 
@@ -40,9 +41,13 @@ class Checkout extends Component {
 
     render () {
         let summary = <Redirect to="/" />; // если ингредиенты не обнаружены, то редиректим на начальную страницу
+        
         if (this.props.ingredients) {
+            // если заказ осуществлен, то редиректим
+            const purchasedRedirect = this.props.purchased ? <Redirect to="/" /> : null ;
             summary = (
                 <div>
+                    {purchasedRedirect}
                     <CheckoutSummary 
                         ingredients={this.props.ingredients}
                         checkoutCancelled={this.checkoutCancelledHandler}
@@ -59,7 +64,8 @@ class Checkout extends Component {
 
 const mapStateToProps = (state) => { // связываем свойства store из Redux с props
     return {
-        ingredients: state.burgerBuilder.ingredients
+        ingredients: state.burgerBuilder.ingredients,
+        purchased: state.order.purchased
     }
 };
 

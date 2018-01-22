@@ -20,3 +20,6 @@ export const PURCHASE_BURGER_SUCCESS = 'PURCHASE_BURGER_SUCCESS';
 
 // экшен: неуспешный заказ бургера
 export const PURCHASE_BURGER_FAILED = 'PURCHASE_BURGER_FAILED';
+
+// экшен: загрузка страницы "Checkout"
+export const PURCHASE_INIT = 'PURCHASE_INIT';
