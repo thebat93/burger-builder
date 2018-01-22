@@ -44,3 +44,45 @@ export const purchaseInit = () => {
         type: actionTypes.PURCHASE_INIT
     }
 };
+
+export const fetchOrdersSuccess = (orders) => {
+    return {
+        type: actionTypes.FETCH_ORDERS_SUCCESS,
+        orders
+    }
+};
+
+export const fetchOrdersFail = (error) => {
+    return {
+        type: actionTypes.FETCH_ORDERS_FAIL,
+        error
+    }
+};
+
+export const fetchOrdersStart = () => {
+    return {
+        type: actionTypes.FETCH_ORDERS_START
+    }
+};
+
+export const fetchOrders = () => {
+    return dispatch => {
+        dispatch( fetchOrdersStart() );
+        axios.get('/orders.json') // получаем список заявок
+        .then(result => {
+            const fetchedOrders = [];
+            for (let key in result.data) {
+                fetchedOrders.push({
+                    ...result.data[key],
+                    id: key
+                });
+            }
+            // при успешном исходе диспатчим экшен fetchOrdersSuccess
+            dispatch( fetchOrdersSuccess(fetchedOrders) );        
+        })
+        .catch(error => {
+            // при неудачном исходе диспатчим экшен fetchOrdersFail
+            dispatch( fetchOrdersFail(error) );  
+        });
+    }
+};

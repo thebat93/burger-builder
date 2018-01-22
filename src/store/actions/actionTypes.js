@@ -23,3 +23,12 @@ export const PURCHASE_BURGER_FAILED = 'PURCHASE_BURGER_FAILED';
 
 // экшен: загрузка страницы "Checkout"
 export const PURCHASE_INIT = 'PURCHASE_INIT';
+
+// экшен: начало загрузки заказов
+export const FETCH_ORDERS_START = 'FETCH_ORDERS_START';
+
+// экшен: успешная загрузка заказов
+export const FETCH_ORDERS_SUCCESS = 'FETCH_ORDERS_SUCCESS';
+
+// экшен: неуспешная загрузка заказов
+export const FETCH_ORDERS_FAIL = 'FETCH_ORDERS_FAIL';
