@@ -3,7 +3,7 @@ import axios from '../../axios-orders';
 
 // Все Actions Creators, относящиеся к BurgerBuilder
 
-// Action Creator: Добваление ингредиента
+// Action Creator: Добавление ингредиента
 
 export const addIngredient = (ingredientName) => {
     return {
@@ -38,6 +38,7 @@ const fetchIngredientsFailed = () => {
     }
 }
 
+// не отображается в Redux DevTools
 export const initIngredients = () => {
     return dispatch => {
         axios.get('https://react-burger-builder-98f3a.firebaseio.com/ingredients.json')

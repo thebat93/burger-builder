@@ -11,3 +11,9 @@ export const SET_INGRIDIENTS = 'SET_INGRIDIENTS';
 
 // экшен: ошибка инициализации ингредиентов
 export const FETCH_INGRIDIENTS_FAILED = 'FETCH_INGRIDIENTS_FAILED';
+
+// экшен: успешный заказ бургера
+export const PURCHASE_BURGER_SUCCESS = 'PURCHASE_BURGER_SUCCESS';
+
+// экшен: неуспешный заказ бургера
+export const PURCHASE_BURGER_FAILED = 'PURCHASE_BURGER_FAILED';
