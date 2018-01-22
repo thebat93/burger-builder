@@ -59,7 +59,7 @@ class Checkout extends Component {
 
 const mapStateToProps = (state) => { // связываем свойства store из Redux с props
     return {
-        ingredients: state.ingredients
+        ingredients: state.burgerBuilder.ingredients
     }
 };
 

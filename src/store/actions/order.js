@@ -31,7 +31,7 @@ export const purchaseBurger = (orderData) => {
         // отправляем данные через axios используя импортированный инстанс
         axios.post('/orders.json', orderData)
             .then(response => {
-                dispatch( purchaseBurgerSuccess(response.data, orderData) );
+                dispatch( purchaseBurgerSuccess(response.data.name, orderData) );
             })
             .catch(error => {
                 dispatch( purchaseBurgerFail(error) );
