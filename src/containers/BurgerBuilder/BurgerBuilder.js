@@ -27,7 +27,8 @@ class BurgerBuilder extends Component {
 
     componentDidMount () {
         console.log(this.props);
-        // инициализация инредиентов переехала в Action Creator
+        // инициализация инредиентов
+        this.props.onInitIngredients();
     }
 
     // проверка возможности покупки
@@ -82,7 +83,7 @@ class BurgerBuilder extends Component {
         // детали заказа
         let orderSummary = null; // по дефолту не отображаются потому что не загружены ингредиенты
         // бургер и контролы
-        let burger = this.state.error ? <p>Ingredients can't be loaded</p> : <Spinner />; // по дефолту отображается спиннер потому что не загружены ингредиенты
+        let burger = this.props.error ? <p>Ingredients can't be loaded</p> : <Spinner />; // по дефолту отображается спиннер потому что не загружены ингредиенты
         if (this.props.ingredients) { // если загружены ингредиенты, то отображаем соответствующие компоненты
             burger = (
                 <Aux>
@@ -123,7 +124,8 @@ class BurgerBuilder extends Component {
 const mapStateToProps = (state) => {
     return {
         ingredients: state.ingredients,
-        price: state.totalPrice
+        price: state.totalPrice,
+        error: state.error
     };
 };
 
@@ -133,12 +135,13 @@ const mapDispatchToProps = (dispatch) => {
         //// Передаем в экшен тип и название ингредиента
         // Используем Action Creator вместо возвращения объекта
         // Исполняем функцию сразу же, чтобы возвращался объект
-        onIngredientAdded: (ingredientName) => dispatch(burgerBuilderActions.addIngredient(ingredientName)),
+        onIngredientAdded: (ingredientName) => dispatch( burgerBuilderActions.addIngredient(ingredientName) ),
             // { 
             //     type: actionTypes.ADD_INGRIDIENTS, 
             //     ingredientName 
             // }
-        onIngredientRemoved: (ingredientName) => dispatch(burgerBuilderActions.removeIngredient(ingredientName))
+        onIngredientRemoved: (ingredientName) => dispatch( burgerBuilderActions.removeIngredient(ingredientName) ),
+        onInitIngredients: () => dispatch( burgerBuilderActions.initIngredients() )
     };
 };
 

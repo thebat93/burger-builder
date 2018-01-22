@@ -33,18 +33,29 @@ const reducer = (state = initialState, action) => {
                     [action.ingredientName]: state.ingredients[action.ingredientName] + 1
                 },
                 totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
-            }
+            };
         case actionTypes.REMOVE_INGRIDIENTS:
-        return {
-            ...state, // копируем все свойства на первом уровне 
-            ingredients: {
-                ...state.ingredients, // копируем все свойства на уровне ingredients
-                // обновляем свойство выбранного ингредиента
-                // название свойства передается в экшене
-                [action.ingredientName]: state.ingredients[action.ingredientName] - 1
-            },
-            totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName]
-        }
+            return {
+                ...state, // копируем все свойства на первом уровне 
+                ingredients: {
+                    ...state.ingredients, // копируем все свойства на уровне ingredients
+                    // обновляем свойство выбранного ингредиента
+                    // название свойства передается в экшене
+                    [action.ingredientName]: state.ingredients[action.ingredientName] - 1
+                },
+                totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName]
+            };
+        case actionTypes.SET_INGRIDIENTS:
+            return {
+                ...state,
+                ingredients: action.ingredients,
+                error: false
+            };
+        case actionTypes.FETCH_INGRIDIENTS_FAILED:
+            return {
+                ...state,
+                error: true
+            }
         // если ни один тип не подошел, то возвращаем старый state
         default:
             return state;
