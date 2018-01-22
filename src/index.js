@@ -13,7 +13,8 @@ import registerServiceWorker from './registerServiceWorker';
 import reducer from './store/reducer';
 
 // создаем стор с помощью createStore и передаем редьюсер
-const store = createStore(reducer);
+// второй аргумент передается для работы Redux DevTools
+const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 // обернули все приложение в браузер роутер и провайдер
 // стор передается в провайдер с помощью пропса store
