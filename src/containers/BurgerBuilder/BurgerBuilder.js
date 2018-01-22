@@ -7,33 +7,27 @@ import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
-import axios from '../../axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandling/withErrorHandler';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import * as burgerBuilderActions from '../../store/actions/index';
+import axios from '../../axios-orders';
 
 
 // контейнер для строителя бургера
 
 class BurgerBuilder extends Component {
-    state = {
+    state = { // свойства в State переехали в Redux Store
         // теперь ingredients находятся в props
         // теперь totalPrice находится в props (как price)
         // теперь флаг возможности покупки бургера находится в props
         purchasing: false, // флаг состояния покупки бургера
-        loading: false, // флаг состояния загрузки (во время отправки запроса)
-        error: false // флаг ошибки
+        // теперь флаг состояния загрузки (во время отправки запроса) находится в props
+        // теперь флаг ошибки находится в props
     }
 
     componentDidMount () {
         console.log(this.props);
-        // axios.get('https://react-burger-builder-98f3a.firebaseio.com/ingredients.json')
-        //     .then(response => {
-        //         this.setState({ ingredients: response.data })
-        //     })
-        //     .catch(error => {
-        //         this.setState({error: true});
-        //     }); // просто ловим ошибку чтобы отработал HOC обработчик ошибок
+        // инициализация инредиентов переехала в Action Creator
     }
 
     // проверка возможности покупки
@@ -111,9 +105,9 @@ class BurgerBuilder extends Component {
             );
         }
         // отображаем спиннер вместо деталей заказа спиннер если происходит отправка запроса
-        if (this.state.loading) {
-            orderSummary = <Spinner />;
-        }
+        // if (this.state.loading) {
+        //     orderSummary = <Spinner />;
+        // }
         return (
             <Aux>
                 <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>

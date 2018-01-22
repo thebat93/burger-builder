@@ -3,13 +3,9 @@ import * as actionTypes from '../actions/actionTypes';
 
 // изначальное состояние
 const initialState = {
-    ingredients: {
-        salad: 0,
-        cheese: 0,
-        bacon: 0,
-        meat: 0
-    },
-    totalPrice: 4
+    ingredients: null, // список ингредиентов не загружен
+    totalPrice: 4, // цена по дефолту (только за булочки)
+    error: false // флаг ошибки
 }
 
 // константа - цены ингредиентов
