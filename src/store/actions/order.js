@@ -18,9 +18,16 @@ export const purchaseBurgerFail = (error) => {
     };
 };
 
+const purchaseBurgerStart = (orderData) => {
+    return {
+        type: actionTypes.PURCHASE_BURGER_START
+    }
+};
+
 // Не отображается в Redux DevTools
-export const purchaseBurgerStart = (orderData) => {
+export const purchaseBurger = (orderData) => {
     return dispatch => {
+        dispatch( purchaseBurgerStart() );
         // отправляем данные через axios используя импортированный инстанс
         axios.post('/orders.json', orderData)
             .then(response => {
