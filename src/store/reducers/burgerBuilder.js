@@ -1,5 +1,5 @@
 // импортируем типы экшенов
-import * as actionTypes from './actions';
+import * as actionTypes from '../actions/actionTypes';
 
 // изначальное состояние
 const initialState = {

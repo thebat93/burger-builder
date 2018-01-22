@@ -10,7 +10,7 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import axios from '../../axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandling/withErrorHandler';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import * as actionTypes from '../../store/actions';
+import * as burgerBuilderActions from '../../store/actions/index';
 
 
 // контейнер для строителя бургера
@@ -136,15 +136,15 @@ const mapStateToProps = (state) => {
 // связываем props с вызовами экшенов
 const mapDispatchToProps = (dispatch) => {
     return {
-        // передаем в экшен тип и название ингредиента
-        onIngredientAdded: (ingredientName) => dispatch({ 
-            type: actionTypes.ADD_INGRIDIENTS, 
-            ingredientName 
-        }),
-        onIngredientRemoved: (ingredientName) => dispatch({ 
-            type: actionTypes.REMOVE_INGRIDIENTS, 
-            ingredientName
-        })
+        //// Передаем в экшен тип и название ингредиента
+        // Используем Action Creator вместо возвращения объекта
+        // Исполняем функцию сразу же, чтобы возвращался объект
+        onIngredientAdded: (ingredientName) => dispatch(burgerBuilderActions.addIngredient(ingredientName)),
+            // { 
+            //     type: actionTypes.ADD_INGRIDIENTS, 
+            //     ingredientName 
+            // }
+        onIngredientRemoved: (ingredientName) => dispatch(burgerBuilderActions.removeIngredient(ingredientName))
     };
 };
 
