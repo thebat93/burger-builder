@@ -25,11 +25,12 @@ const purchaseBurgerStart = (orderData) => {
 };
 
 // Не отображается в Redux DevTools
-export const purchaseBurger = (orderData) => {
+export const purchaseBurger = ( orderData, token ) => {
     return dispatch => {
         dispatch( purchaseBurgerStart() );
         // отправляем данные через axios используя импортированный инстанс
-        axios.post('/orders.json', orderData)
+        // передаем токен в запросе (доступ только у логинизированных пользователей)
+        axios.post('/orders.json?auth=' + token, orderData)
             .then(response => {
                 dispatch( purchaseBurgerSuccess(response.data.name, orderData) );
             })
@@ -65,10 +66,12 @@ export const fetchOrdersStart = () => {
     }
 };
 
-export const fetchOrders = () => {
+export const fetchOrders = (token) => {
     return dispatch => {
         dispatch( fetchOrdersStart() );
-        axios.get('/orders.json') // получаем список заявок
+        // передаем в запросе токен
+        // доступ получит только пользователь, который вошел в профиль
+        axios.get('/orders.json?auth=' + token) // получаем список заявок
         .then(result => {
             const fetchedOrders = [];
             for (let key in result.data) {
