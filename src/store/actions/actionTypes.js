@@ -32,3 +32,12 @@ export const FETCH_ORDERS_SUCCESS = 'FETCH_ORDERS_SUCCESS';
 
 // экшен: неуспешная загрузка заказов
 export const FETCH_ORDERS_FAIL = 'FETCH_ORDERS_FAIL';
+
+// экшен: начало аутентификации
+export const AUTH_START = 'AUTH_START';
+
+// экшен: успешная аутентификация
+export const AUTH_SUCCESS = 'AUTH_SUCCESS';
+
+// экшен: неуспешная аутентификация
+export const AUTH_FAIL = 'AUTH_FAIL';

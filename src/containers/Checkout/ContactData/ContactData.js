@@ -103,12 +103,12 @@ class ContactData extends Component {
             isValid = value.trim() !== '' && isValid; // устанавливаем новое значение валидности
         }
 
-        if (rules.minLenght) { // если поле имеет ограничение на количество символов
-            isValid = value.length >= rules.minLenght && isValid;
+        if (rules.minLength) { // если поле имеет ограничение на количество символов
+            isValid = value.length >= rules.minLength && isValid;
         }
 
-        if (rules.maxLenght) { // если поле имеет ограничение на количество символов
-            isValid = value.length <= rules.maxLenght && isValid;
+        if (rules.maxLength) { // если поле имеет ограничение на количество символов
+            isValid = value.length <= rules.maxLength && isValid;
         }
         // вернет true только если все проверки успешно прошли
         return isValid; // вернули boolean
