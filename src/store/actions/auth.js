@@ -51,7 +51,7 @@ export const auth = (email, password, isSignup) => {
             })
             .catch(error => { // В случае ошибки
                 console.log(error);
-                dispatch( authFail(error) ); // запускаем экшен неудачной аутентификации
+                dispatch( authFail(error.response.data.error) ); // запускаем экшен неудачной аутентификации
             });
     };
 };
