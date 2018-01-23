@@ -41,3 +41,6 @@ export const AUTH_SUCCESS = 'AUTH_SUCCESS';
 
 // экшен: неуспешная аутентификация
 export const AUTH_FAIL = 'AUTH_FAIL';
+
+// экшен: выход из профиля
+export const AUTH_LOGOUT = 'AUTH_LOGOUT';

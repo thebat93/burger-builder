@@ -26,6 +26,21 @@ export const authFail = (error) => {
     };
 };
 
+export const logout = () => {
+    return {
+        type: actionTypes.AUTH_LOGOUT
+    };
+};
+
+// проверка прекращения валидности токена (через 1 час после логинизации)
+export const checkAuthTimeout = (expirationTime) => {
+    return dispatch => {
+        setTimeout(() => {
+            dispatch( logout() );
+        }, expirationTime * 1000);
+    };
+}; 
+
 // Async Action Creator
 // Не отображается в Redux DevTools
 
@@ -48,6 +63,7 @@ export const auth = (email, password, isSignup) => {
             .then(response => {
                 console.log(response);
                 dispatch( authSucess(response.data.idToken, response.data.localId) ); // запускаем экшен удачной аутентификации
+                dispatch( checkAuthTimeout(response.data.expiresIn) );
             })
             .catch(error => { // В случае ошибки
                 console.log(error);
