@@ -11,10 +11,11 @@ export const authStart = () => {
     };
 };
 
-export const authSucess = authData => {
+export const authSucess = (token, userId) => {
     return {
         type: actionTypes.AUTH_SUCCESS,
-        authData
+        idToken: token,
+        userId
     };
 };
 
@@ -46,7 +47,7 @@ export const auth = (email, password, isSignup) => {
         axios.post(url, authData)
             .then(response => {
                 console.log(response);
-                dispatch( authSucess(response.data) ); // запускаем экшен удачной аутентификации
+                dispatch( authSucess(response.data.idToken, response.data.localId) ); // запускаем экшен удачной аутентификации
             })
             .catch(error => { // В случае ошибки
                 console.log(error);
