@@ -28,7 +28,7 @@ export const authFail = (error) => {
 // Async Action Creator
 // Не отображается в Redux DevTools
 
-export const auth = (email, password) => {
+export const auth = (email, password, isSignup) => {
     return dispatch => {
         dispatch( authStart() );
         // Данные для отправки
@@ -36,8 +36,14 @@ export const auth = (email, password) => {
             email, password,
             returnSecureToken: true
         };
+        // URL для регистрации
+        let url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyCyqOtfIX5Um1BfCT_Y-ZgrTcUNLCxYDtQ';
+        if (!isSignup) {
+            // URL для входа
+            url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyCyqOtfIX5Um1BfCT_Y-ZgrTcUNLCxYDtQ';
+        }
         // Отправляем запрос с данными
-        axios.post('https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyCyqOtfIX5Um1BfCT_Y-ZgrTcUNLCxYDtQ', authData)
+        axios.post(url, authData)
             .then(response => {
                 console.log(response);
                 dispatch( authSucess(response.data) ); // запускаем экшен удачной аутентификации

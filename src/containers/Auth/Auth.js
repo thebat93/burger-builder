@@ -40,7 +40,8 @@ class Auth extends Component {
                 valid: false, // флаг валидности поля
                 touched: false // флаг, показывающий было ли изменено значение поля
             }
-        }
+        },
+        isSignup: true // Режим входа / регистрации
     };
     
     checkValidity = (value, rules) => { // проверка валидности
@@ -73,9 +74,17 @@ class Auth extends Component {
         this.setState({ controls: updatedControls });
     };
 
+    // Обработчик сабмита формы
     submitHandler = (e) => {
         e.preventDefault();
-        this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value);
+        this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignup);
+    };
+
+    // Обработчик смены режима
+    switchAuthModeHandler = () => {
+        this.setState( prevState => {
+            return { isSignup: !prevState.isSignup };
+        });
     };
 
     render () {
@@ -103,6 +112,9 @@ class Auth extends Component {
                     {form}
                     <Button btnType="Success">SUBMIT</Button>
                 </form>
+                <Button
+                    clicked={this.switchAuthModeHandler}
+                    btnType="Danger">SWITCH TO { this.state.isSignup ? 'SIGNIN' : 'SIGNUP' }</Button>
             </div>
         );
     };
@@ -110,7 +122,7 @@ class Auth extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: (email, password) => dispatch( actions.auth(email, password) ) // присоединяем к Action Creator
+        onAuth: (email, password, isSignup) => dispatch( actions.auth(email, password, isSignup) ) // присоединяем к Action Creator
     };
 };
 
