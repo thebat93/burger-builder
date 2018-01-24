@@ -49,11 +49,15 @@ class BurgerBuilder extends Component {
     }
 
     purchaseHandler = () => { // Обработчик нажатия на кнопку заказа
-        this.setState({purchasing: true}); // меняем флаг состояния покупки
+        if (this.props.isAuthenticated) { // если пользователь вошел
+            this.setState({ purchasing: true }); // меняем флаг состояния покупки
+        } else {
+            this.props.history.push('/auth'); // иначе редерект на страницу авторизации
+        }
     }
 
     purchaseCancelHandler = () => { // Обработчик отмены заказа (нажатие на затемнение)
-        this.setState({purchasing: false});
+        this.setState({ purchasing: false });
     }
 
     purchaseContinueHandler = () => { // Обработчик продолжения заказа (нажатие на 'Continue')
@@ -95,7 +99,8 @@ class BurgerBuilder extends Component {
                         disabled={disabledInfo}
                         price={this.props.price}
                         purchaseable={this.updatePurchaseState(this.props.ingredients)}
-                        ordered={this.purchaseHandler} />
+                        ordered={this.purchaseHandler}
+                        isAuth={this.props.isAuthenticated} />
                 </Aux>
             );
             orderSummary = (
@@ -126,7 +131,8 @@ const mapStateToProps = (state) => {
     return {
         ingredients: state.burgerBuilder.ingredients,
         price: state.burgerBuilder.totalPrice,
-        error: state.burgerBuilder.error
+        error: state.burgerBuilder.error,
+        isAuthenticated: state.auth.token !== null
     };
 };
 
