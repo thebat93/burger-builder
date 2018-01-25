@@ -66,12 +66,14 @@ export const fetchOrdersStart = () => {
     }
 };
 
-export const fetchOrders = (token) => {
+export const fetchOrders = (token, userId) => {
     return dispatch => {
         dispatch( fetchOrdersStart() );
+        // параметры запроса: объявляем переменную auth и фильтруем по пользователю
+        const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
         // передаем в запросе токен
         // доступ получит только пользователь, который вошел в профиль
-        axios.get('/orders.json?auth=' + token) // получаем список заявок
+        axios.get('/orders.json' + queryParams) // получаем список заявок
         .then(result => {
             const fetchedOrders = [];
             for (let key in result.data) {
