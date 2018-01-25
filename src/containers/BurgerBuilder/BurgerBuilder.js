@@ -51,9 +51,9 @@ class BurgerBuilder extends Component {
     purchaseHandler = () => { // Обработчик нажатия на кнопку заказа
         if (this.props.isAuthenticated) { // если пользователь вошел
             this.setState({ purchasing: true }); // меняем флаг состояния покупки
-        } else {
-            this.props.onSetAuthRedirectPath('/checkout');
-            this.props.history.push('/auth'); // иначе редерект на страницу авторизации
+        } else { // если пользователь не вошел
+            this.props.onSetAuthRedirectPath('/checkout'); // меняем ссылку редиректа после входа пользователя
+            this.props.history.push('/auth'); // редерект на страницу авторизации
         }
     }
 

@@ -27,6 +27,10 @@ export const authFail = (error) => {
 };
 
 export const logout = () => {
+    // очищаем Local Storage
+    localStorage.removeItem('token');
+    localStorage.removeItem('expirationDate');
+    localStorage.removeItem('userId');
     return {
         type: actionTypes.AUTH_LOGOUT
     };
@@ -62,7 +66,17 @@ export const auth = (email, password, isSignup) => {
         axios.post(url, authData)
             .then(response => {
                 console.log(response);
-                dispatch( authSucess(response.data.idToken, response.data.localId) ); // запускаем экшен удачной аутентификации
+                // вычисление срока годности токена
+                const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
+                // сохраняем полученный токен в Local Storage
+                localStorage.setItem('token', response.data.idToken);
+                // сохраняем срок годности токена в Local Storage
+                localStorage.setItem('expirationDate', expirationDate);
+                // сохраняем ИД пользователя в Local Storage
+                localStorage.setItem('userId', response.data.localId);
+                // запускаем экшен удачной аутентификации
+                dispatch( authSucess(response.data.idToken, response.data.localId) );
+                // запускаем экшен проверки окончания времени жизни токена
                 dispatch( checkAuthTimeout(response.data.expiresIn) );
             })
             .catch(error => { // В случае ошибки
@@ -77,4 +91,27 @@ export const setAuthRedirectPath = (path) => {
         type: actionTypes.SET_AUTH_REDIRECT_PATH,
         path
     };
-}
+};
+
+// проверка состояния логина (каждый раз при загрузке приложения)
+export const authCheckState = () => {
+    return dispatch => {
+        // получаем токен из Local Storage
+        const token = localStorage.getItem('token');
+        // если он не обнаружен, то выполняем действие logout
+        if (!token) {
+            dispatch( logout() );
+        } else { // иначе выполняем действие authSuccess
+            // получаем срок годности токена
+            const expirationDate = new Date(localStorage.getItem('expirationDate'));
+            // проверяем, не закончился ли срок годности токена
+            if (expirationDate > new Date()) {
+                const userId = localStorage.getItem('userId');
+                dispatch( authSucess(token, userId) );
+                dispatch( checkAuthTimeout(expirationDate.getSeconds() - new Date().getSeconds()) );
+            } else {
+                dispatch( logout() );
+            }
+        }
+    };
+};

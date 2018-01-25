@@ -48,7 +48,9 @@ class Auth extends Component {
     };
     
     componentDidMount() {
+        // если мы не строим бургер и путь редиректа не "/"...
         if (!this.props.buildingBurger && this.props.authRedirectPath !== '/') {
+            // ..., то сбрасываем путь редиректа по дефолту
             this.props.onSetAuthRedirectPath();
         }
     }
@@ -128,6 +130,7 @@ class Auth extends Component {
         }
 
         // Редирект на начальную страницу после аутентификации
+        // или на страницу заказа, если пользователь начал строить бургер
         let authRedirect = null;
         if (this.props.isAuthenticated) {
             authRedirect = <Redirect to={this.props.authRedirectPath} />;
