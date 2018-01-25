@@ -47,6 +47,12 @@ class Auth extends Component {
         isSignup: true // Режим входа / регистрации
     };
     
+    componentDidMount() {
+        if (!this.props.buildingBurger && this.props.authRedirectPath !== '/') {
+            this.props.onSetAuthRedirectPath();
+        }
+    }
+
     checkValidity = (value, rules) => { // проверка валидности
         let isValid = true;
 
@@ -124,7 +130,7 @@ class Auth extends Component {
         // Редирект на начальную страницу после аутентификации
         let authRedirect = null;
         if (this.props.isAuthenticated) {
-            authRedirect = <Redirect to="/" />;
+            authRedirect = <Redirect to={this.props.authRedirectPath} />;
         }
 
         return (
@@ -147,13 +153,16 @@ const mapStateToProps = state => {
     return {
         loading: state.auth.loading,
         error: state.auth.error,
-        isAuthenticated: state.auth.token !== null
+        isAuthenticated: state.auth.token !== null,
+        buildingBurger: state.burgerBuilder.building,
+        authRedirectPath: state.auth.authRedirectPath
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: (email, password, isSignup) => dispatch( actions.auth(email, password, isSignup) ) // присоединяем к Action Creator
+        onAuth: (email, password, isSignup) => dispatch( actions.auth(email, password, isSignup) ), // присоединяем к Action Creator
+        onSetAuthRedirectPath: () => dispatch( actions.setAuthRedirectPath('/') )
     };
 };
 

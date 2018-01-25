@@ -44,3 +44,6 @@ export const AUTH_FAIL = 'AUTH_FAIL';
 
 // экшен: выход из профиля
 export const AUTH_LOGOUT = 'AUTH_LOGOUT';
+
+// экшен: установка ссылки для редиректа
+export const SET_AUTH_REDIRECT_PATH = 'SET_AUTH_REDIRECT_PATH';

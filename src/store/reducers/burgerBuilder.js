@@ -6,7 +6,8 @@ import { updateObject } from '../utility';
 const initialState = {
     ingredients: null, // список ингредиентов не загружен
     totalPrice: 4, // цена по дефолту (только за булочки)
-    error: false // флаг ошибки
+    error: false, // флаг ошибки
+    building: false // флаг того, что пользователь находится в процессе "построения" бургер
 }
 
 // константа - цены ингредиентов
@@ -24,7 +25,8 @@ const addIngredient = (state, action) => {
     const updatedIngredients = updateObject(state.ingredients, updatedIngredient);
     const updatedState = {
         ingredients: updatedIngredients,
-        totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
+        totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName],
+        building: true
     };
     return updateObject( state, updatedState );
 };
@@ -34,18 +36,21 @@ const removeIngredient = (state, action) => {
     const updatedIngs = updateObject(state.ingredients, updatedIng);
     const updatedSt = {
         ingredients: updatedIngs,
-        totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName]
+        totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName],
+        building: true
     };
     return updateObject(state, updatedSt);
 };
 
+// Установка состояния по дефолту
 const setIngredients = (state, action) => {
     return updateObject(state,
         {
             ...state,
             ingredients: action.ingredients,
             totalPrice: 4,
-            error: false
+            error: false,
+            building: false
         });
 };
 
