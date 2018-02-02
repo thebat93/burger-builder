@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import { updateObject } from '../../shared/utility';
+import { updateObject, checkValidity } from '../../shared/utility';
 
 import classes from './Auth.css';
 
@@ -55,29 +55,12 @@ class Auth extends Component {
             this.props.onSetAuthRedirectPath();
         }
     }
-
-    checkValidity = (value, rules) => { // проверка валидности
-        let isValid = true;
-
-        if (rules.required) { // если поле должно быть required
-            isValid = value.trim() !== '' && isValid; // устанавливаем новое значение валидности
-        }
-        if (rules.minLength) { // если поле имеет ограничение на количество символов
-            isValid = value.length >= rules.minLength && isValid;
-        }
-
-        if (rules.maxLength) { // если поле имеет ограничение на количество символов
-            isValid = value.length <= rules.maxLength && isValid;
-        }
-        // вернет true только если все проверки успешно прошли
-        return isValid; // вернули boolean
-    }
-
+    
     inputChangedHandler = (event, controlName) => { // обработчик изменения значения инпутов (2-way binding)
         const updatedControls = updateObject(this.state.controls, {
             [controlName]: updateObject(this.state.controls[controlName], {
                 value: event.target.value, // присваиваем введенное значение, подключаем 2-way binding
-                valid: this.checkValidity(event.target.value, this.state.controls[controlName].validation), // проверка валидности
+                valid: checkValidity(event.target.value, this.state.controls[controlName].validation), // проверка валидности
                 touched: true // поле было изменено
             })
         });

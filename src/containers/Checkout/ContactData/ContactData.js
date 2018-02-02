@@ -8,7 +8,7 @@ import axios from'../../../axios-orders';
 import Input from '../../../components/UI/Input/Input';
 import withErrorHandler from '../../../hoc/withErrorHandling/withErrorHandler';
 import * as orderActions from '../../../store/actions/index';
-import { updateObject } from '../../../shared/utility';
+import { updateObject, checkValidity } from '../../../shared/utility';
 
 class ContactData extends Component {
     state = {
@@ -97,29 +97,11 @@ class ContactData extends Component {
         // loading: false // находится в Redux Store
     }
 
-    checkValidity = (value, rules) => { // проверка валидности
-        let isValid = true;
-
-        if (rules.required) { // если поле должно быть required
-            isValid = value.trim() !== '' && isValid; // устанавливаем новое значение валидности
-        }
-
-        if (rules.minLength) { // если поле имеет ограничение на количество символов
-            isValid = value.length >= rules.minLength && isValid;
-        }
-
-        if (rules.maxLength) { // если поле имеет ограничение на количество символов
-            isValid = value.length <= rules.maxLength && isValid;
-        }
-        // вернет true только если все проверки успешно прошли
-        return isValid; // вернули boolean
-    }
-
     inputChangedHandler = (e, inputIdentifier) => { // обработчик изменения значения инпутов (2-way binding)
         const updatedFormElement = updateObject(this.state.orderForm[inputIdentifier], {
             value: e.target.value, // присваиваем новое значение
             // проверка валидности
-            valid: this.checkValidity( e.target.value, this.state.orderForm[inputIdentifier].validation ),
+            valid: checkValidity( e.target.value, this.state.orderForm[inputIdentifier].validation ),
             touched: true // поле было изменено
         }); 
         const updatedOrderForm = updateObject(this.state.orderForm, {
