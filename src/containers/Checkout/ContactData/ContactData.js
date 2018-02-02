@@ -7,7 +7,8 @@ import Spinner from '../../../components/UI/Spinner/Spinner';
 import axios from'../../../axios-orders';
 import Input from '../../../components/UI/Input/Input';
 import withErrorHandler from '../../../hoc/withErrorHandling/withErrorHandler';
-import * as orderActions from '../../../store/actions/index'; 
+import * as orderActions from '../../../store/actions/index';
+import { updateObject } from '../../../shared/utility';
 
 class ContactData extends Component {
     state = {
@@ -115,17 +116,15 @@ class ContactData extends Component {
     }
 
     inputChangedHandler = (e, inputIdentifier) => { // обработчик изменения значения инпутов (2-way binding)
-        const updatedOrderForm = { // копируем настройки всей формы
-            ...this.state.orderForm
-        };
-        const updatedFormElement = { // копируем настройки конкретного элемента, который мы меняем
-            ...updatedOrderForm[inputIdentifier]
-        };
-        updatedFormElement.value = e.target.value; // присваиваем новое значение
-        // проверка валидности
-        updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
-        updatedFormElement.touched = true; // поле было изменено
-        updatedOrderForm[inputIdentifier] = updatedFormElement; // обновляем поле в форме
+        const updatedFormElement = updateObject(this.state.orderForm[inputIdentifier], {
+            value: e.target.value, // присваиваем новое значение
+            // проверка валидности
+            valid: this.checkValidity( e.target.value, this.state.orderForm[inputIdentifier].validation ),
+            touched: true // поле было изменено
+        }); 
+        const updatedOrderForm = updateObject(this.state.orderForm, {
+            [inputIdentifier]: updatedFormElement
+        }); 
         // проверка валидности всей формы
         let formIsValid = true; 
         for (let inputIdentifier in updatedOrderForm) { // проходим по всей форме

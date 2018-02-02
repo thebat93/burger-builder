@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import { updateObject } from '../../shared/utility';
 
 import classes from './Auth.css';
 
@@ -73,15 +74,13 @@ class Auth extends Component {
     }
 
     inputChangedHandler = (event, controlName) => { // обработчик изменения значения инпутов (2-way binding)
-        const updatedControls = { // копируем настройки всей формы
-            ...this.state.controls,
-            [controlName]: { // обновляем свойства контрола
-                ...this.state.controls[controlName],
+        const updatedControls = updateObject(this.state.controls, {
+            [controlName]: updateObject(this.state.controls[controlName], {
                 value: event.target.value, // присваиваем введенное значение, подключаем 2-way binding
                 valid: this.checkValidity(event.target.value, this.state.controls[controlName].validation), // проверка валидности
                 touched: true // поле было изменено
-            }
-        };
+            })
+        });
         this.setState({ controls: updatedControls });
     };
 
