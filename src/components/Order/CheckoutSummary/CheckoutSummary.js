@@ -7,8 +7,6 @@ import classes from './CheckoutSummary.css';
 // Детали заказа
 
 const checkoutSummary = (props) => {
-    console.log('summary');
-    console.log(props.ingredients);
     return (
         <div className={classes.CheckoutSummary}>
             <h1>We hope it tastes well!</h1>

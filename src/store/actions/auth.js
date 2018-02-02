@@ -65,7 +65,6 @@ export const auth = (email, password, isSignup) => {
         // Отправляем запрос с данными
         axios.post(url, authData)
             .then(response => {
-                console.log(response);
                 // вычисление срока годности токена
                 const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
                 // сохраняем полученный токен в Local Storage
