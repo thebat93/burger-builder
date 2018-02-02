@@ -34,7 +34,7 @@ class App extends Component {
     // Роуты для неавторизированных пользователей
     let routes = (
       <Switch>
-        <Route path='/auth' component={ Auth } />
+        <Route path='/auth' component={ asyncAuth } />
         <Route exact path='/' component={ BurgerBuilder } />
         <Redirect to='/' />
       </Switch>
