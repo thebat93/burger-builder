@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import Aux from '../hocAux/hocAux';
 import classes from './Layout.css';
 
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
@@ -26,7 +25,7 @@ class Layout extends Component {
     
     render() {
         return (
-            <Aux>
+            <React.Fragment>
                 <Toolbar
                     isAuth={this.props.isAuthenticated}
                     drawerToggleClicked={this.sideDrawerToggleHandler} />
@@ -37,7 +36,7 @@ class Layout extends Component {
                 <main className={classes.Content}>
                     { this.props.children }
                 </main>
-            </Aux>
+            </React.Fragment>
         );
     }
 }

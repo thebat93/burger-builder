@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 // импортируем функцию connect для свзязи Реакта и Редакса
 import { connect } from 'react-redux';
 
-import Aux from '../../hoc/hocAux/hocAux';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
@@ -91,7 +90,7 @@ class BurgerBuilder extends Component {
         let burger = this.props.error ? <p>Ingredients can't be loaded</p> : <Spinner />; // по дефолту отображается спиннер потому что не загружены ингредиенты
         if (this.props.ingredients) { // если загружены ингредиенты, то отображаем соответствующие компоненты
             burger = (
-                <Aux>
+                <React.Fragment>
                     <Burger ingredients={this.props.ingredients} />
                     <BuildControls 
                         ingredientAdded={this.props.onIngredientAdded} 
@@ -101,7 +100,7 @@ class BurgerBuilder extends Component {
                         purchaseable={this.updatePurchaseState(this.props.ingredients)}
                         ordered={this.purchaseHandler}
                         isAuth={this.props.isAuthenticated} />
-                </Aux>
+                </React.Fragment>
             );
             orderSummary = (
                 <OrderSummary
@@ -116,12 +115,12 @@ class BurgerBuilder extends Component {
         //     orderSummary = <Spinner />;
         // }
         return (
-            <Aux>
+            <React.Fragment>
                 <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
                     {orderSummary}
                 </Modal>
                 { burger }
-            </Aux>
+            </React.Fragment>
         );
     }
 }

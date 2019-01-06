@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import Modal from '../../components/UI/Modal/Modal';
-import Aux from '../hocAux/hocAux';
 
 // компонент высшего уровня
 // обертка для сообщения об ошибке
@@ -37,7 +36,7 @@ const withErrorHandler = (WrapperComponent, axios) => { // передаем об
         // JSX с модальным окном
         render () {
             return (
-                <Aux>
+                <React.Fragment>
                     <Modal 
                         show={this.state.error}
                         modalClosed={this.errorConfirmedHandler}>
@@ -46,7 +45,7 @@ const withErrorHandler = (WrapperComponent, axios) => { // передаем об
                         {/* Если получили ошибку, то отображаем ее. Иначе ничего не передаем в Modal. */}
                     </Modal>
                     <WrapperComponent {...this.props} />
-                </Aux>
+                </React.Fragment>
             );
         }
     }
