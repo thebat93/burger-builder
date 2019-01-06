@@ -8,7 +8,6 @@ import Logout from './containers/Auth/Logout/Logout';
 import * as actions from './store/actions/index';
 import asyncComponent from './hoc/asyncComponent/asyncComponent';
 
-
 // Lazy Loading для Checkout
 const asyncCheckout = asyncComponent(() => {
   return import('./containers/Checkout/Checkout');
@@ -34,9 +33,9 @@ class App extends Component {
     // Роуты для неавторизированных пользователей
     let routes = (
       <Switch>
-        <Route path='/auth' component={ asyncAuth } />
-        <Route exact path='/' component={ BurgerBuilder } />
-        <Redirect to='/' />
+        <Route path="/auth" component={asyncAuth} />
+        <Route exact path="/" component={BurgerBuilder} />
+        <Redirect to="/" />
       </Switch>
     );
 
@@ -44,21 +43,19 @@ class App extends Component {
       // Роуты для авторизированных пользователей
       routes = (
         <Switch>
-          <Route path='/checkout' component={ asyncCheckout } />
-          <Route path='/orders' component={ asyncOrders } />
-          <Route path='/logout' component={ Logout } />
-          <Route path='/auth' component={ asyncAuth } />
-          <Route exact path='/' component={ BurgerBuilder } />
-          <Redirect to='/' />
+          <Route path="/checkout" component={asyncCheckout} />
+          <Route path="/orders" component={asyncOrders} />
+          <Route path="/logout" component={Logout} />
+          <Route path="/auth" component={asyncAuth} />
+          <Route exact path="/" component={BurgerBuilder} />
+          <Redirect to="/" />
         </Switch>
       );
     }
 
     return (
       <div>
-        <Layout>
-          { routes }
-        </Layout>
+        <Layout>{routes}</Layout>
       </div>
     );
   }
@@ -72,8 +69,13 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onTryAutoSignUp: () => dispatch( actions.authCheckState() )
+    onTryAutoSignUp: () => dispatch(actions.authCheckState())
   };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(App)
+);
