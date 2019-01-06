@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 // компонент для Роутера из React Router
 import { BrowserRouter } from 'react-router-dom';
-// компонент для Редакса 
+// компонент для Редакса
 import { Provider } from 'react-redux';
 // функции createStore (создание Store) и applyMiddleware (использование Middleware в качестве enhancer)
 // compose (для объединения нескольких Middleware)
@@ -22,24 +22,27 @@ import authReducer from './store/reducers/auth';
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
-    burgerBuilder: burgerBuilderReducer,
-    order: orderReducer,
-    auth: authReducer
+  burgerBuilder: burgerBuilderReducer,
+  order: orderReducer,
+  auth: authReducer
 });
 
 // создаем стор с помощью createStore и передаем редьюсер
 // второй аргумент передается для работы Redux DevTools и thunk
-const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
+const store = createStore(
+  rootReducer,
+  composeEnhancers(applyMiddleware(thunk))
+);
 
 // обернули все приложение в браузер роутер и провайдер
 // стор передается в провайдер с помощью пропса store
 
 const app = (
-    <Provider store={store}>
-        <BrowserRouter>
-            <App />
-        </BrowserRouter>
-    </Provider>
+  <Provider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>
 );
 
 ReactDOM.render(app, document.getElementById('root'));
